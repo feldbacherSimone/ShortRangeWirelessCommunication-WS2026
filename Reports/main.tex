@@ -1,0 +1,50 @@
+%% A simple template for a lab or course report using the Hagenberg setup
+%% based on the standard LaTeX 'report' class
+
+%%% Magic comments for setting the correct parameters in compatible IDEs
+% !TeX encoding = utf8
+% !TeX program = pdflatex 
+% !TeX spellcheck = en_US
+% !BIB program = biber
+
+\RequirePackage[utf8]{inputenc} % Remove when using lualatex or xelatex!
+\RequirePackage{hgbpdfa}				% Remove if NO PDF/A output is desired (fonts are not affected)
+
+\documentclass[language=english,titlepage=false,smartquotes=true]{hgbreport}
+% Supported options in [..]:
+%    Main language: language=english (default), language=german
+%    Typographic quotes: smartquotes=true, smartquotes=false (default)
+%    APA citation style: apa=true, apa=false (default)
+%    Code listings: codestyle=color (default), codestyle=mono, codestyle=classic
+%    Title page: titlepage=true (default), titlepage=false
+%    Page layout: twoside=false (single-sided, default), twoside=true (double-sided)
+%    Update check: updatecheck=true (default), updatecheck=false (to suppress)
+%%%-----------------------------------------------------------------------------
+
+\renewcommand{\chapter}[1]{} % Disable \chapter command
+\graphicspath{{images/}}     % Location of images and graphics
+\bibliography{hgbreferences}    % Biblatex bibliography file (hgbreferences.bib)
+\ExecuteBibliographyOptions{backref=false} % No back references in bibliography
+
+%%%-----------------------------------------------------------------------------
+\setcounter{chapter}{1}	% <----- set to assignment number!
+%%%-----------------------------------------------------------------------------
+\begin{document}
+%%%-----------------------------------------------------------------------------
+
+\author{Simone B.\ Feldbacher \and
+		Florian J.\ Neugebauer \and
+		Gerald Wagner-Mistlberger}
+\title{SWC1IC: Short-Range Wireless Communication  -- WS 2026\\ % Name of the course
+				Lab Report \arabic{chapter}}
+\date{\today}
+
+%%%-----------------------------------------------------------------------------
+\maketitle
+%%%-----------------------------------------------------------------------------
+
+\input{Lab1}
+
+%%%-----------------------------------------------------------------------------
+\end{document}
+%%%-----------------------------------------------------------------------------
