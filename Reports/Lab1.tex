@@ -10,17 +10,31 @@ use a similar structure.
 
 \section{The first assignment}
 
-Describe the goals of the assignment briefly in your own words (i.e., do not
-just copy-paste the assignment text). In general, try to describe
-%
+The goal of this assignment is to analyze the wireless performance of the nRF52840 SoC by measuring signal strength (RSSI) and packet loss over different distances, transmit powers, and modulation schemes.
+
 \begin{itemize}
-	\item the task or problem to solve;
-	\item the details of your solution, key ideas, steps involved, math,
-	algorithms, references, \ldots;
-	\item tests used to validate your solution and/or performance.
+    %%\item \textbf{Task:}
+    %%\begin{itemize}
+        %%\item Measure average RSSI and packet loss for 1000 transmitted packets across 5 different distances.
+        %%\item Compare two transmit power levels (0\,dBm vs. -40\,dBm) using BLE 2\,Mbit/s.
+        %%\item Compare three modulation modes at -40\,dBm: BLE 2\,Mbit/s, BLE Long Range (125\,kbit/s), and IEEE 802.15.4 (250\,kbit/s).
+    %%\end{itemize}
+
+    \item \textbf{Setup and Implementation:}
+    \begin{itemize}
+        \item \textit{Hardware:} Two Nordic nRF52840-DK boards connected to a PC via USB (one transmitter TX, one receiver RX).
+        \item \textit{Software:} Zephyr \texttt{radio\_test} application controlled via PuTTY over serial UART (115200 baud, 8N1).
+        \item \textit{Channel Selection:} Using the nRF Connect RSSI Viewer, an interference-free frequency of 2440\,MHz was selected, set as channel offset 40 (\texttt{start\_channel 40}).
+        \item \textit{Transmission:} TX sent bursts of 1000 packets with pattern \texttt{pattern\_11110000} using \texttt{start\_tx\_modulated\_carrier 1000}.
+        \item \textit{Metrics:} RX logged the received packets $N_{\text{RX}}$ and RSSI using \texttt{print\_rx}. Packet loss was calculated as:
+        \begin{equation}
+            \text{Packet Loss [\%]} = \frac{1000 - N_{\text{RX}}}{1000} \times 100
+        \end{equation}
+    \end{itemize}
+
+    \item \textbf{Test Procedure:}
+    Measurements were taken across 5 spatial distances ($d_1$ to $d_5$), starting close where reception is perfect ($\text{RSSI} > -60$\,dBm, 0\% loss) and ending at a distance where packet loss becomes clearly visible ($\text{RSSI} \approx -95$\,dBm).
 \end{itemize}
-
-
 
 \section*{Summary and comments}
 
