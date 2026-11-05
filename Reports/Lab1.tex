@@ -6,7 +6,7 @@ The goal of this assignment is to analyze the wireless performance of the nRF528
 
 \begin{itemize}
     \item \textbf{Setup and Implementation:}
-    Two Nordic nRF52840-DK boards (TX and RX) were controlled via PuTTY over serial UART (115200 baud, 8N1) using the Zephyr \texttt{radio\_test} sample. An interference-free channel at 2440\,MHz was selected (\texttt{start\_channel 40}) via the nRF Connect RSSI Viewer. The TX sent bursts of 1000 packets with \texttt{pattern\_11110000} (\texttt{start\_tx\_modulated\_carrier 1000}) at 0\,dBm and at -40\,dBm with BLE 2\,Mbit/s. The RX logged received packets $N_{\text{RX}}$ and RSSI with \texttt{print\_rx}. Packet loss was calculated as:
+    Two Nordic nRF52840-DK boards (TX and RX) were controlled via PuTTY over serial UART (115200 baud, 8N1) using the Zephyr \texttt{radio\_test} sample. An interference-free channel at 2440\,MHz was selected (\texttt{start\_channel 40}) via the nRF Connect RSSI Viewer. The TX sent bursts of 1000 packets with \texttt{pattern\_11110000} (\texttt{start\_tx\_modulated\_carrier 1000}) at 0\,dBm and at -40\,dBm with BLE 2\,Mbit/s. For the radio-mode comparison, the second mode IEEE 802.15.4-250\,kbit/s (\texttt{data\_rate ieee802154\_250Kbit}) was used with a random payload pattern and frequency hopping over channels 18--80. The RX logged received packets $N_{\text{RX}}$ and RSSI with \texttt{print\_rx}. Packet loss was calculated as:
     \begin{equation}
         \text{Packet Loss [\%]} = \frac{1000 - N_{\text{RX}}}{1000} \times 100
     \end{equation}
@@ -14,6 +14,8 @@ The goal of this assignment is to analyze the wireless performance of the nRF528
     \item \textbf{Test Procedure:}
     At 0\,dBm, measurements were performed across five physical distances: 1\,m, 4\,m, 6\,m, 8\,m, and 11\,m.
     At $-40$\,dBm the link budget was much tighter, so the sweep covered shorter distances from 10\,mm to 1\,m.
+    The radio-mode comparison at $-40$\,dBm (IEEE 802.15.4-250\,kbit/s vs.\ BLE 2\,Mbit/s) was measured
+    at 250\,mm, 400\,mm, 500\,mm, 3\,m, and 4\,m.
 \end{itemize}
 
 \section{Results and Discussion}
@@ -76,28 +78,26 @@ The goal of this assignment is to analyze the wireless performance of the nRF528
 
 \subsection{Comparison of Radio Modes}
 
-% TODO: repeat the -40 dBm sweep on BOTH kits with a second radio mode,
-%   data_rate ieee802154_250Kbit   (IEEE 802.15.4-2006 250 kbit/s)
-% or  data_rate ble_lr125Kbit      (BLE Long Range 125 kbit/s)
-% The BLE 2 Mbit/s data from above is the baseline. Replace the placeholder with one
-% two-panel plot (mean RSSI left, packet loss right) with one line per mode
-% (suggested file name: n40dBM_RSSI_and_PacketLoss_Comparison_BLE2Mbit_vs_IEEE802154_250Kbit.png).
-
 The BLE 2\,Mbit/s results at $-40$\,dBm were compared with a second radio mode, IEEE 802.15.4-250\,kbit/s
-(\texttt{data\_rate ieee802154\_250Kbit}), measured at the same transmit power and over the same distances.
+(\texttt{data\_rate ieee802154\_250Kbit}), at the same transmit power.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\linewidth]{example-image}
+    \includegraphics[width=0.95\linewidth]{40dBM_Radio_Mode_Comparison_RSSI_and_Packet_Loss.png}
     \caption{Mean RSSI (left) and packet loss (right) for BLE 2\,Mbit/s and IEEE 802.15.4-250\,kbit/s at $-40$\,dBm transmit power.}
     \label{fig:mode_compare}
 \end{figure}
 
 \begin{itemize}
     \item \textbf{Comparison (Figure~\ref{fig:mode_compare}):}
-    TODO: state whether the mean RSSI of the two modes differs, and which mode keeps a lower packet loss
-    (expected: the 250\,kbit/s mode, with its lower receiver sensitivity and eight times longer symbol time,
-    remains reliable at longer distances).
+    At 250\,mm the 802.15.4 link was strong and loss-free (1000 of 1000 packets, mean $-45$\,dBm).
+    At the common range of 400--500\,mm both modes operated at the sensitivity floor
+    ($-92.7$ to $-95.8$\,dBm), but the 250\,kbit/s PHY kept a usable link with 8.1\% and 43.4\% loss,
+    while BLE 2\,Mbit/s lost 86.8\% of the packets at 400\,mm: the eight-fold longer symbol time of the
+    250\,kbit/s mode provides a clearly better range at the same transmit power. From 400\,mm on, the
+    received level of the 802.15.4 session never recovered above $-92$\,dBm, and the session log contains
+    the operator note \enquote{winkelmaybebad} (board angle probably misaligned), so the far-range runs
+    (3\,m: 19.7\%, 4\,m: 41.5\% loss) are indicative rather than a controlled sweep.
 \end{itemize}
 
 \section{Conclusion}
@@ -105,7 +105,7 @@ The BLE 2\,Mbit/s results at $-40$\,dBm were compared with a second radio mode, 
 \begin{itemize}
     \item \textbf{Indoor Attenuation:} Physical obstructions and multipath reflections prevent RSSI from decreasing linearly with distance, making raw RSSI unreliable for standalone distance estimation.
     \item \textbf{Link Margin at 0\,dBm:} At 0\,dBm, BLE 2\,Mbit/s easily covers up to 11\,m with negligible loss while the -40\,dBm case had considerably higher packet loss, indicating that higher transmit power is crucial for maintaining reliable links in indoor environments.
-    \item \textbf{Data Rate vs.\ Range:} TODO: one sentence on the outcome of the radio mode comparison.
+    \item \textbf{Data Rate vs.\ Range:} At $-40$\,dBm, the 250\,kbit/s mode kept a usable link at 400\,mm (8.1\% loss) where BLE 2\,Mbit/s was almost entirely lost (86.8\%), confirming that a lower data rate trades throughput for better receiver sensitivity and thus a longer range.
     \item \textbf{Future Implementations:} TODO: conclude what you will consider in future wireless implementations
     (e.g.\ transmit power vs.\ battery life, data rate choice for the required range, and channel selection against interference).
 \end{itemize}
