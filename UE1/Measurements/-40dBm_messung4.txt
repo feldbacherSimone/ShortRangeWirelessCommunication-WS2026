@@ -1,0 +1,81 @@
+uart:~$ 700mm 
+700mm: command not found
+uart:~$ 700mmstart_rx
+uart:~$ RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-95
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-92
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-92
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-93
+RX-RSSI=-92
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-94
+RX-RSSI=-93
+RX-RSSI=-93
+start_rx700mmstart_rx1m paralellprint_rx
+Received payload:
+00000000: 8b f0 f0 f0 f0 f0 f0 f0  f0 f0 f3 f0 f2 f0 f2 30 |........ .......0|
+00000010: ec f0 f0 f0 f0 f0 f0 f2  f0 f0 f0 f0 30 f0 f0 f0 |........ ....0...|
+00000020: f0 f0 f3 f0 f0 b1 f0 f0  c0 f0 f0 f0 f0 f6 f0 f0 |........ ........|
+00000030: 70 b0 f6 f0 f0 f0 f0 f0  f0 f0 f0 f0 f1 50 90 f1 |p....... .....P..|
+00000040: 70 f0 f0 90 a8 90 f0 f0  f0 f0 f0 f0 f0 f0 f0 f0 |p....... ........|
+00000050: b1 f0 f0 f6 f0 f0 f0 f0  f1 70 f0 f0 e8 f0 f0 c0 |........ .p......|
+00000060: 90 f3 f0 f0 f5 70 f0 f0  f0 f0 b0 f0 f0 c0 f0 c0 |.....p.. ........|
+00000070: f0 f0 f0 f0 f0 f0 f0 70  b0 f0 f1 70 f0 f0 f0 f0 |.......p ...p....|
+00000080: f8 30 f0 f8 f0 f0 f0 f0  f0 f0 f0 f0 f0 30 f0 f0 |.0...... .....0..|
+00000090: f3 f2 f0 f0 f0 90 f0 f0  fc f7 f1 f0 f0 f0 f0 f0 |........ ........|
+000000A0: f0 f4 80 f0 f0 f0 f0 f0  f0 f0 f0 f0 fc e8 90 f0 |........ ........|
+000000B0: f2 f0 f0 f0 f0 f3 70 f0  f0 e8 f4 f0 00 f1 70 f0 |......p. ......p.|
+000000C0: f0 d0 f0 f0 f0 b0 f2 f0  f0 f0 f0 f0 f0 f0 f0 70 |........ .......p|
+000000D0: f0 f0 f0 f0 e0 f1 70 f0  f0 f4 f0 f0 f0 f0 f0 70 |......p. .......p|
+000000E0: e8 f0 f1 ec f0 f1 f0 f0  f0 f0 f8 f0 f0 f0 f0 f0 |........ ........|
+000000F0: f0 f0 f0 f0 f0 f2 10 b3  c3 9e f0 f7 f0 30 b0 11 |........ .....0..|
+Number of packets: 59
