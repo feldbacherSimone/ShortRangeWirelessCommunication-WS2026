@@ -3,7 +3,7 @@
 *~
 
 # build
-/build*/
+UE1/radio_test/build*/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
