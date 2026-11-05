@@ -1,18 +1,12 @@
-\begin{abstract}\noindent
-
-This Lab Unit covered the basics of setting up radio transmission on a Nordic nRF52840-DK development board. Through a hand on exercise the signal strength and packet loss between two boards was tested at various distances. This showcased both the effect of transmission strength and different radio modes. 
-
-\end{abstract}
-
 %%-----------------------------------------------------------------------------
 
-\section{The first assignment}
+\section{Setup}
 
 The goal of this assignment is to analyze the wireless performance of the nRF52840 SoC by measuring signal strength (RSSI) and packet loss over different distances, transmit powers, and modulation schemes.
 
 \begin{itemize}
     \item \textbf{Setup and Implementation:}
-    Two Nordic nRF52840-DK boards (TX and RX) were controlled via PuTTY over serial UART (115200 baud, 8N1) using the Zephyr \texttt{radio\_test} sample. An interference-free channel at 2440\,MHz was selected (\texttt{start\_channel 40}) via the nRF Connect RSSI Viewer. The TX sent bursts of 1000 packets with \texttt{pattern\_11110000} (\texttt{start\_tx\_modulated\_carrier 1000}) at 0\,dBm with BLE 2\,Mbit/s. The RX logged received packets $N_{\text{RX}}$ and RSSI with \texttt{print\_rx}. Packet loss was calculated as:
+    Two Nordic nRF52840-DK boards (TX and RX) were controlled via PuTTY over serial UART (115200 baud, 8N1) using the Zephyr \texttt{radio\_test} sample. An interference-free channel at 2440\,MHz was selected (\texttt{start\_channel 40}) via the nRF Connect RSSI Viewer. The TX sent bursts of 1000 packets with \texttt{pattern\_11110000} (\texttt{start\_tx\_modulated\_carrier 1000}) at 0\,dBm and at -40\,dBm with BLE 2\,Mbit/s. The RX logged received packets $N_{\text{RX}}$ and RSSI with \texttt{print\_rx}. Packet loss was calculated as:
     \begin{equation}
         \text{Packet Loss [\%]} = \frac{1000 - N_{\text{RX}}}{1000} \times 100
     \end{equation}
@@ -21,7 +15,9 @@ The goal of this assignment is to analyze the wireless performance of the nRF528
     Measurements were performed across five physical distances: 1\,m, 4\,m, 6\,m, 8\,m, and 11\,m.
 \end{itemize}
 
-\section*{Summary and Comments}
+\section{Results and Discussion}
+
+\subsection{Transmit Power at 0\,dBm}
 
 \begin{figure}[htbp]
     \centering
@@ -31,24 +27,13 @@ The goal of this assignment is to analyze the wireless performance of the nRF528
 \end{figure}
 
 \begin{itemize}
-    \item \textbf{RSSI vs. Distance (Figure~\ref{fig:rssi_samples}):} At 1\,m, the signal remained flat near $-61$\,dBm. Increasing the distance lowered the RSSI to $-72$\,dBm at 4\,m, $-85$\,dBm at 8\,m, and down to $-88$\,dBm at 11\,m. Noticeable fluctuations appeared at larger distances due to indoor multipath reflections.
-\end{itemize}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.92\linewidth]{0dBM_RSSI_Distribution_for_Each_Measurement.png}
-    \caption{RSSI histogram distributions across all five test positions.}
-    \label{fig:rssi_hist}
-\end{figure}
-
-\begin{itemize}
-    \item \textbf{RSSI Spread (Figure~\ref{fig:rssi_hist}):} Close distances (1\,m and 4\,m) exhibited narrow spreads within 1--2\,dBm. Distances from 6\,m to 11\,m broadened across 5--8\,dBm, demonstrating that attenuated signals are far more sensitive to environmental changes and room movement.
+    \item \textbf{RSSI vs. Distance (Figure~\ref{fig:rssi_samples}):} At 1\,m, the signal remained flat near $-61$\,dBm. Increasing the distance lowered the RSSI to $-72$\,dBm at 4\,m, $-85$\,dBm at 8\,m, and down to $-88$\,dBm at 11\,m. Noticeable fluctuations appeared at larger distances due to indoor multipath reflections. The spread of the samples was narrow (1--2\,dBm) at 1\,m and 4\,m and broadened to 5--8\,dBm at 6--11\,m, showing that attenuated signals are much more sensitive to environmental changes.
 \end{itemize}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.85\linewidth]{0dBM_Mean_RSSI_and_Packet_Loss_Across_Measurements.png}
-    \caption{Mean RSSI compared with packet loss across all measured distances.}
+    \caption{Mean RSSI compared with packet loss across all measured distances at 0\,dBm transmit power.}
     \label{fig:mean_rssi_loss}
 \end{figure}
 
@@ -56,15 +41,65 @@ The goal of this assignment is to analyze the wireless performance of the nRF528
     \item \textbf{Packet Reception and Loss (Figure~\ref{fig:mean_rssi_loss}):} Out of 1000 transmitted packets, 945 were received at 1\,m (5.5\% loss) and 936 at 11\,m (6.4\% loss). Despite the 27\,dBm signal drop, packet loss remained below 6.5\%, showing that 0\,dBm provides ample link margin for indoor spaces.
 \end{itemize}
 
-\subsection*{Key Takeaways}
+\subsection{Transmit Power at $-40$\,dBm}
+
+% TODO: repeat the sweep with output_power neg40dBm on both kits (everything else as above),
+% then replace the placeholder with a plot in the same style as Figure~\ref{fig:mean_rssi_loss}
+% (suggested file name: n40dBM_Mean_RSSI_and_Packet_Loss_Across_Measurements.png).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\linewidth]{example-image}
+    \caption{Mean RSSI compared with packet loss across all measured distances at $-40$\,dBm transmit power.}
+    \label{fig:mean_rssi_loss_n40}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{RSSI and Packet Loss (Figure~\ref{fig:mean_rssi_loss_n40}):}
+    TODO: state the mean RSSI and packet loss per distance (expected: roughly 40\,dB lower RSSI than in
+    Figure~\ref{fig:mean_rssi_loss} and markedly higher packet loss, since the received power approaches
+    the receiver sensitivity of the 2\,Mbit/s PHY).
+\end{itemize}
+
+\subsection{Comparison of Radio Modes}
+
+% TODO: repeat the -40 dBm sweep on BOTH kits with a second radio mode,
+%   data_rate ieee802154_250Kbit   (IEEE 802.15.4-2006 250 kbit/s)
+% or  data_rate ble_lr125Kbit      (BLE Long Range 125 kbit/s)
+% The BLE 2 Mbit/s data from above is the baseline. Replace the placeholder with one
+% two-panel plot (mean RSSI left, packet loss right) with one line per mode
+% (suggested file name: n40dBM_RSSI_and_PacketLoss_Comparison_BLE2Mbit_vs_IEEE802154_250Kbit.png).
+
+The BLE 2\,Mbit/s results at $-40$\,dBm were compared with a second radio mode, IEEE 802.15.4-250\,kbit/s
+(\texttt{data\_rate ieee802154\_250Kbit}), measured at the same transmit power and over the same distances.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{example-image}
+    \caption{Mean RSSI (left) and packet loss (right) for BLE 2\,Mbit/s and IEEE 802.15.4-250\,kbit/s at $-40$\,dBm transmit power.}
+    \label{fig:mode_compare}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Comparison (Figure~\ref{fig:mode_compare}):}
+    TODO: state whether the mean RSSI of the two modes differs, and which mode keeps a lower packet loss
+    (expected: the 250\,kbit/s mode, with its lower receiver sensitivity and eight times longer symbol time,
+    remains reliable at longer distances).
+\end{itemize}
+
+\section{Conclusion}
+
 \begin{itemize}
     \item \textbf{Indoor Attenuation:} Physical obstructions and multipath reflections prevent RSSI from decreasing linearly with distance, making raw RSSI unreliable for standalone distance estimation.
-    \item \textbf{Link Margin at 0\,dBm:} At 0\,dBm, BLE 2\,Mbit/s easily covers up to 11\,m with negligible loss while the -40\,dBm had considerably higher packet loss, indicating that higher transmit power is crucial for maintaining reliable links in indoor environments.
+    \item \textbf{Link Margin at 0\,dBm:} At 0\,dBm, BLE 2\,Mbit/s easily covers up to 11\,m with negligible loss while the -40\,dBm case had considerably higher packet loss, indicating that higher transmit power is crucial for maintaining reliable links in indoor environments.
+    \item \textbf{Data Rate vs.\ Range:} TODO: one sentence on the outcome of the radio mode comparison.
+    \item \textbf{Future Implementations:} TODO: conclude what you will consider in future wireless implementations
+    (e.g.\ transmit power vs.\ battery life, data rate choice for the required range, and channel selection against interference).
 \end{itemize}
 
 
 %%-----------------------------------------------------------------------------
-  
+
 
 
 \printbibliography[heading=noheader]
