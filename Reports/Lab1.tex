@@ -1,6 +1,6 @@
 \begin{abstract}\noindent
 
-This Lab Unit covered the basics of setting up radio transmission on a Nordic nRF52840-DK development board. Through a hand on exercise the signal strength and packet loss between two boards was tested at various distances. This showcased both the effect of transmission strangth and different radio modes. 
+This Lab Unit covered the basics of setting up radio transmission on a Nordic nRF52840-DK development board. Through a hand on exercise the signal strength and packet loss between two boards was tested at various distances. This showcased both the effect of transmission strength and different radio modes. 
 
 \end{abstract}
 
@@ -11,35 +11,57 @@ This Lab Unit covered the basics of setting up radio transmission on a Nordic nR
 The goal of this assignment is to analyze the wireless performance of the nRF52840 SoC by measuring signal strength (RSSI) and packet loss over different distances, transmit powers, and modulation schemes.
 
 \begin{itemize}
-    %%\item \textbf{Task:}
-    %%\begin{itemize}
-        %%\item Measure average RSSI and packet loss for 1000 transmitted packets across 5 different distances.
-        %%\item Compare two transmit power levels (0\,dBm vs. -40\,dBm) using BLE 2\,Mbit/s.
-        %%\item Compare three modulation modes at -40\,dBm: BLE 2\,Mbit/s, BLE Long Range (125\,kbit/s), and IEEE 802.15.4 (250\,kbit/s).
-    %%\end{itemize}
-
     \item \textbf{Setup and Implementation:}
-    \begin{itemize}
-        \item \textit{Hardware:} Two Nordic nRF52840-DK boards connected to a PC via USB (one transmitter TX, one receiver RX).
-        \item \textit{Software:} Zephyr \texttt{radio\_test} application controlled via PuTTY over serial UART (115200 baud, 8N1).
-        \item \textit{Channel Selection:} Using the nRF Connect RSSI Viewer, an interference-free frequency of 2440\,MHz was selected, set as channel offset 40 (\texttt{start\_channel 40}).
-        \item \textit{Transmission:} TX sent bursts of 1000 packets with pattern \texttt{pattern\_11110000} using \texttt{start\_tx\_modulated\_carrier 1000}.
-        \item \textit{Metrics:} RX logged the received packets $N_{\text{RX}}$ and RSSI using \texttt{print\_rx}. Packet loss was calculated as:
-        \begin{equation}
-            \text{Packet Loss [\%]} = \frac{1000 - N_{\text{RX}}}{1000} \times 100
-        \end{equation}
-    \end{itemize}
+    Two Nordic nRF52840-DK boards (TX and RX) were controlled via PuTTY over serial UART (115200 baud, 8N1) using the Zephyr \texttt{radio\_test} sample. An interference-free channel at 2440\,MHz was selected (\texttt{start\_channel 40}) via the nRF Connect RSSI Viewer. The TX sent bursts of 1000 packets with \texttt{pattern\_11110000} (\texttt{start\_tx\_modulated\_carrier 1000}) at 0\,dBm with BLE 2\,Mbit/s. The RX logged received packets $N_{\text{RX}}$ and RSSI with \texttt{print\_rx}. Packet loss was calculated as:
+    \begin{equation}
+        \text{Packet Loss [\%]} = \frac{1000 - N_{\text{RX}}}{1000} \times 100
+    \end{equation}
 
     \item \textbf{Test Procedure:}
-    Measurements were taken across 5 spatial distances ($d_1$ to $d_5$), starting close where reception is perfect ($\text{RSSI} > -60$\,dBm, 0\% loss) and ending at a distance where packet loss becomes clearly visible ($\text{RSSI} \approx -95$\,dBm).
+    Measurements were performed across five physical distances: 1\,m, 4\,m, 6\,m, 8\,m, and 11\,m.
 \end{itemize}
 
-\section*{Summary and comments}
+\section*{Summary and Comments}
 
-Here you should summarize your learning experience, personal discoveries and
-major difficulties (if any). Also state the approximate amount of time you
-spent for this assignment and any optional accomplishments. This non-numbered
-section is produced with the \verb!\section*{..}! command.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{0dBM_RSSI_Measurements_at_0dBm_Transmitted_Power.png}
+    \caption{Received RSSI across 1000 samples for each distance at 0\,dBm transmit power.}
+    \label{fig:rssi_samples}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{RSSI vs. Distance (Figure~\ref{fig:rssi_samples}):} At 1\,m, the signal remained flat near $-61$\,dBm. Increasing the distance lowered the RSSI to $-72$\,dBm at 4\,m, $-85$\,dBm at 8\,m, and down to $-88$\,dBm at 11\,m. Noticeable fluctuations appeared at larger distances due to indoor multipath reflections.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{0dBM_RSSI_Distribution_for_Each_Measurement.png}
+    \caption{RSSI histogram distributions across all five test positions.}
+    \label{fig:rssi_hist}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{RSSI Spread (Figure~\ref{fig:rssi_hist}):} Close distances (1\,m and 4\,m) exhibited narrow spreads within 1--2\,dBm. Distances from 6\,m to 11\,m broadened across 5--8\,dBm, demonstrating that attenuated signals are far more sensitive to environmental changes and room movement.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\linewidth]{0dBM_Mean_RSSI_and_Packet_Loss_Across_Measurements.png}
+    \caption{Mean RSSI compared with packet loss across all measured distances.}
+    \label{fig:mean_rssi_loss}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Packet Reception and Loss (Figure~\ref{fig:mean_rssi_loss}):} Out of 1000 transmitted packets, 945 were received at 1\,m (5.5\% loss) and 936 at 11\,m (6.4\% loss). Despite the 27\,dBm signal drop, packet loss remained below 6.5\%, showing that 0\,dBm provides ample link margin for indoor spaces.
+\end{itemize}
+
+\subsection*{Key Takeaways}
+\begin{itemize}
+    \item \textbf{Indoor Attenuation:} Physical obstructions and multipath reflections prevent RSSI from decreasing linearly with distance, making raw RSSI unreliable for standalone distance estimation.
+    \item \textbf{Link Margin at 0\,dBm:} At 0\,dBm, BLE 2\,Mbit/s easily covers up to 11\,m with negligible loss while the -40\,dBm had considerably higher packet loss, indicating that higher transmit power is crucial for maintaining reliable links in indoor environments.
+\end{itemize}
+
 
 %%-----------------------------------------------------------------------------
   
