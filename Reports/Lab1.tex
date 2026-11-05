@@ -12,7 +12,8 @@ The goal of this assignment is to analyze the wireless performance of the nRF528
     \end{equation}
 
     \item \textbf{Test Procedure:}
-    Measurements were performed across five physical distances: 1\,m, 4\,m, 6\,m, 8\,m, and 11\,m.
+    At 0\,dBm, measurements were performed across five physical distances: 1\,m, 4\,m, 6\,m, 8\,m, and 11\,m.
+    At $-40$\,dBm the link budget was much tighter, so the sweep covered shorter distances from 10\,mm to 1\,m.
 \end{itemize}
 
 \section{Results and Discussion}
@@ -27,7 +28,7 @@ The goal of this assignment is to analyze the wireless performance of the nRF528
 \end{figure}
 
 \begin{itemize}
-    \item \textbf{RSSI vs. Distance (Figure~\ref{fig:rssi_samples}):} At 1\,m, the signal remained flat near $-61$\,dBm. Increasing the distance lowered the RSSI to $-72$\,dBm at 4\,m, $-85$\,dBm at 8\,m, and down to $-88$\,dBm at 11\,m. Noticeable fluctuations appeared at larger distances due to indoor multipath reflections. The spread of the samples was narrow (1--2\,dBm) at 1\,m and 4\,m and broadened to 5--8\,dBm at 6--11\,m, showing that attenuated signals are much more sensitive to environmental changes.
+    \item \textbf{RSSI vs. Distance (Figure~\ref{fig:rssi_samples}):} At 1\,m, the signal remained flat near $-61$\,dBm. Increasing the distance lowered the RSSI to $-72$\,dBm at 4\,m, $-85$\,dBm at 6\,m, $-88$\,dBm at 8\,m, and $-85$\,dBm at 11\,m. Noticeable fluctuations appeared at larger distances due to indoor multipath reflections. The spread of the samples was narrow (1--2\,dBm) at 1\,m and 4\,m and broadened to 5--8\,dBm at 6--11\,m, showing that attenuated signals are much more sensitive to environmental changes.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -38,27 +39,39 @@ The goal of this assignment is to analyze the wireless performance of the nRF528
 \end{figure}
 
 \begin{itemize}
-    \item \textbf{Packet Reception and Loss (Figure~\ref{fig:mean_rssi_loss}):} Out of 1000 transmitted packets, 945 were received at 1\,m (5.5\% loss) and 936 at 11\,m (6.4\% loss). Despite the 27\,dBm signal drop, packet loss remained below 6.5\%, showing that 0\,dBm provides ample link margin for indoor spaces.
+    \item \textbf{Packet Reception and Loss (Figure~\ref{fig:mean_rssi_loss}):} Out of 1000 transmitted packets, 945 were received at 1\,m (5.5\% loss) and 942 at 11\,m (5.8\% loss). Despite the $\approx 24$\,dB signal drop from 1\,m to 11\,m, packet loss remained below 6.5\%, showing that 0\,dBm provides ample link margin for indoor spaces.
 \end{itemize}
 
 \subsection{Transmit Power at $-40$\,dBm}
 
-% TODO: repeat the sweep with output_power neg40dBm on both kits (everything else as above),
-% then replace the placeholder with a plot in the same style as Figure~\ref{fig:mean_rssi_loss}
-% (suggested file name: n40dBM_Mean_RSSI_and_Packet_Loss_Across_Measurements.png).
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{40dBM_RSSI_Measurements_at_-40dBm_Transmitted_Power.png}
+    \caption{Received RSSI across the 1000-packet bursts for each distance at $-40$\,dBm transmit power.}
+    \label{fig:rssi_samples_n40}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{RSSI Samples (Figure~\ref{fig:rssi_samples_n40}):}
+    Up to 300\,mm each run forms a dense, nearly flat trace, while from 400\,mm on the traces break up
+    into sparse single points, since only a small fraction of the 1000 packets survives the channel.
+\end{itemize}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\linewidth]{example-image}
-    \caption{Mean RSSI compared with packet loss across all measured distances at $-40$\,dBm transmit power.}
+    \includegraphics[width=0.85\linewidth]{40dBM_Mean_RSSI_and_Packet_Loss_Across_Distance.png}
+    \caption{Mean RSSI compared with packet loss across the measured distances (10\,mm to 1\,m) at $-40$\,dBm transmit power.}
     \label{fig:mean_rssi_loss_n40}
 \end{figure}
 
 \begin{itemize}
     \item \textbf{RSSI and Packet Loss (Figure~\ref{fig:mean_rssi_loss_n40}):}
-    TODO: state the mean RSSI and packet loss per distance (expected: roughly 40\,dB lower RSSI than in
-    Figure~\ref{fig:mean_rssi_loss} and markedly higher packet loss, since the received power approaches
-    the receiver sensitivity of the 2\,Mbit/s PHY).
+    At 10\,mm the mean RSSI was $-62$\,dBm; between 100\,mm and 300\,mm it stayed above $-83$\,dBm and
+    packet loss remained below 7\%. Beyond 300\,mm the link degraded sharply: for most positions at
+    400--1000\,mm the mean RSSI fell to $-91$ to $-94$\,dBm and packet loss jumped to 83--94\%.
+    The single runs scatter far more than in the 0\,dBm case (e.g., three runs at 500\,mm yielded
+    10.1\%, 94.0\%, and 94.0\% loss), because the received power lies close to the receiver sensitivity
+    of the 2\,Mbit/s PHY, so small changes in position or phase decide whether a packet is received.
 \end{itemize}
 
 \subsection{Comparison of Radio Modes}
